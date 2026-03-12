@@ -1,0 +1,188 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <sstream>
+#include <algorithm>
+#include <chrono>
+
+using namespace std;
+using namespace std::chrono;
+
+// Struct to hold the data for each record
+struct Record {
+    string firstName;
+    string lastName;
+    string streetAddress;
+    string city;
+    string state;
+    string zipCode;
+
+    // Custom comparison operator for sorting
+    bool operator<(const Record& other) const {
+        if (state != other.state)
+            return state < other.state;
+        if (zipCode != other.zipCode)
+            return zipCode < other.zipCode;
+        if (city != other.city)
+            return city < other.city;
+        if (streetAddress != other.streetAddress)
+            return streetAddress < other.streetAddress;
+        if (firstName != other.firstName)
+            return firstName < other.firstName;
+        return lastName < other.lastName;
+    }
+};
+
+// Function to parse a line and convert it into a Record
+Record parseLine(const string& line, char delimiter) {
+    Record record;
+    stringstream ss(line);
+    string item;
+
+    getline(ss, record.firstName, delimiter);
+    getline(ss, record.lastName, delimiter);
+    getline(ss, record.streetAddress, delimiter);
+    getline(ss, record.city, delimiter);
+    getline(ss, record.state, delimiter);
+    getline(ss, record.zipCode, delimiter);
+
+    return record;
+}
+
+// Function to read the records from the input file
+vector<Record> readRecords(const string& filename, char delimiter) {
+    ifstream file(filename);
+    vector<Record> records;
+    string line;
+
+    if (!file.is_open()) {
+        cerr << "Error: Could not open file " << filename << endl;
+        exit(1);
+    }
+
+    while (getline(file, line)) {
+        records.push_back(parseLine(line, delimiter));
+    }
+
+    return records;
+}
+
+// QuickSort algorithm
+int partition(vector<Record>& records, int low, int high) {
+    Record pivot = records[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; ++j) {
+        if (records[j] < pivot) {
+            i++;
+            swap(records[i], records[j]);
+        }
+    }
+    swap(records[i + 1], records[high]);
+    return i + 1;
+}
+
+void quickSort(vector<Record>& records, int low, int high) {
+    if (low < high) {
+        int pi = partition(records, low, high);
+        quickSort(records, low, pi - 1);
+        quickSort(records, pi + 1, high);
+    }
+}
+
+// Merge Sort algorithm
+void merge(vector<Record>& records, int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+
+    vector<Record> L(n1), R(n2);
+
+    for (int i = 0; i < n1; ++i)
+        L[i] = records[left + i];
+    for (int i = 0; i < n2; ++i)
+        R[i] = records[mid + 1 + i];
+
+    int i = 0, j = 0, k = left;
+    while (i < n1 && j < n2) {
+        if (L[i] < R[j]) {
+            records[k] = L[i];
+            i++;
+        } else {
+            records[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1) {
+        records[k] = L[i];
+        i++;
+        k++;
+    }
+
+    while (j < n2) {
+        records[k] = R[j];
+        j++;
+        k++;
+    }
+}
+
+void mergeSort(vector<Record>& records, int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+
+        mergeSort(records, left, mid);
+        mergeSort(records, mid + 1, right);
+
+        merge(records, left, mid, right);
+    }
+}
+
+// Function to write sorted records to a file
+void writeRecords(const string& filename, const vector<Record>& records) {
+    ofstream file(filename);
+
+    for (const auto& record : records) {
+        file << record.firstName << " | " << record.lastName << " | "
+             << record.streetAddress << " | " << record.city << " | "
+             << record.state << " | " << record.zipCode << endl;
+    }
+}
+
+int main() {
+    string inputFile;
+    string outputFile1 = "output_quicksort.txt";  // QuickSort result
+    string outputFile2 = "output_mergesort.txt";  // MergeSort result
+    char delimiter = '|';
+
+    // Ask the user for the input file name
+    cout << "Enter the name of the input file (e.g., addresses_100.txt): ";
+    cin >> inputFile;
+
+    // Read records from the input file
+    vector<Record> records = readRecords(inputFile, delimiter);
+
+    // QuickSort
+    vector<Record> quickSortedRecords = records;  // Copy of records
+    auto startQuickSort = high_resolution_clock::now();
+    quickSort(quickSortedRecords, 0, quickSortedRecords.size() - 1);
+    auto endQuickSort = high_resolution_clock::now();
+    auto durationQuickSort = duration_cast<microseconds>(endQuickSort - startQuickSort).count();
+    cout << "QuickSort took " << durationQuickSort << " microseconds." << endl;
+
+    // Write QuickSort result to file
+    writeRecords(outputFile1, quickSortedRecords);
+
+    // MergeSort
+    vector<Record> mergeSortedRecords = records;  // Copy of records
+    auto startMergeSort = high_resolution_clock::now();
+    mergeSort(mergeSortedRecords, 0, mergeSortedRecords.size() - 1);
+    auto endMergeSort = high_resolution_clock::now();
+    auto durationMergeSort = duration_cast<microseconds>(endMergeSort - startMergeSort).count();
+    cout << "MergeSort took " << durationMergeSort << " microseconds." << endl;
+
+    // Write MergeSort result to file
+    writeRecords(outputFile2, mergeSortedRecords);
+
+    return 0;
+}

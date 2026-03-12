@@ -1,0 +1,149 @@
+--- Menu ---
+1. Insert a node
+2. Display the list
+3. Delete a node
+4. Exit
+Enter your choice:1
+
+--- Insert Options ---
+1. Insert at the beginning
+2. Insert at the end
+3. Insert at a specific position
+Enter your choice: 1
+Enter the value to insert: 10
+--- Menu ---
+1. Insert a node
+2. Display the list
+3. Delete a node
+4. Exit
+--- Insert Options ---
+1. Insert at the beginning
+2. Insert at the end
+3. Insert at a specific position
+Enter your choice: 2
+Enter the value to insert: 40
+--- Menu ---at the end of the list.
+1. Insert a node
+2. Display the list
+3. Delete a node
+4. Exit
+--- Insert Options ---
+1. Insert at the beginning
+2. Insert at the end
+3. Insert at a specific position
+Enter your choice: 3
+Enter the value to insert: 20
+Enter the position: 2
+--- Menu ---at position 2.
+1. Insert a node
+2. Display the list
+3. Delete a node
+4. Exit
+Enter your choice: 2
+--- Menu --- 10 -> 20 -> 40 -> NULL
+1. Insert a node
+2. Display the list
+3. Delete a node
+4. Exit
+Enter your choice:1
+
+--- Insert Options ---
+1. Insert at the beginning
+2. Insert at the end
+3. Insert at a specific position
+Enter your choice:3
+Enter the value to insert:30
+Enter the position:3
+30 inserted at position 3.
+
+--- Menu ---
+1. Insert a node
+2. Display the list
+3. Delete a node
+4. Exit
+Enter your choice:2
+Linked List: 10 -> 20 -> 30 -> 40 -> NULL
+
+--- Menu ---
+1. Insert a node
+2. Display the list
+3. Delete a node
+4. Exit
+Enter your choice:3
+
+--- Delete Options ---
+1. Delete the beginning node
+2. Delete the end node
+3. Delete a node at a specific position
+Enter your choice:1
+10 deleted from the beginning.
+
+--- Menu ---
+1. Insert a node
+2. Display the list
+3. Delete a node
+4. Exit
+Enter your choice:2
+Linked List: 20 -> 30 -> 40 -> NULL
+
+--- Menu ---
+1. Insert a node
+2. Display the list
+3. Delete a node
+4. Exit
+Enter your choice:3
+
+--- Delete Options ---
+1. Delete the beginning node
+2. Delete the end node
+3. Delete a node at a specific position
+Enter your choice:2
+40 deleted from the end.
+
+--- Menu ---
+1. Insert a node
+2. Display the list
+3. Delete a node
+4. Exit
+Enter your choice:2
+Linked List: 20 -> 30 -> NULL
+
+--- Menu ---
+1. Insert a node
+2. Display the list
+3. Delete a node
+4. Exit
+Enter your choice:3
+
+--- Delete Options ---
+1. Delete the beginning node
+2. Delete the end node
+3. Delete a node at a specific position
+Enter your choice:3
+Enter the position:2
+30 deleted from position 2.
+
+--- Menu ---
+1. Insert a node
+2. Display the list
+3. Delete a node
+4. Exit
+Enter your choice:2
+Linked List: 20 -> NULL
+
+--- Menu ---
+1. Insert a node
+2. Display the list
+3. Delete a node
+4. Exit
+Enter your choice:6
+Invalid choice! Please try again.
+
+--- Menu ---
+1. Insert a node
+2. Display the list
+3. Delete a node
+4. Exit
+Enter your choice:4
+Exiting the program.
+Process exited with code: 0.

@@ -1,0 +1,176 @@
+#include <iostream>
+#include <cstdlib>  // For rand() and srand()
+#include <ctime>    // For time()
+#include <algorithm> // For std::swap
+
+using namespace std;
+
+// Function to display the menu
+void displayMenu() {
+    cout << "\nMenu:\n";
+    cout << "a. Insertion Sort\n";
+    cout << "b. Merge Sort\n";
+    cout << "c. Quick Sort\n";
+    cout << "d. Exit Program\n";
+    cout << "Choose an option: ";
+}
+
+// Function to perform Insertion Sort
+void insertionSort(int A[], int n) {
+    for (int i = 1; i < n; i++) {
+        int key = A[i];
+        int j = i - 1;
+        while (j >= 0 && A[j] > key) {
+            A[j + 1] = A[j];
+            j--;
+        }
+        A[j + 1] = key;
+    }
+}
+
+// Function to perform Merge Sort
+void merge(int A[], int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+
+    int* L = new int[n1];
+    int* R = new int[n2];
+
+    for (int i = 0; i < n1; i++)
+        L[i] = A[left + i];
+    for (int i = 0; i < n2; i++)
+        R[i] = A[mid + 1 + i];
+
+    int i = 0, j = 0, k = left;
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            A[k] = L[i];
+            i++;
+        } else {
+            A[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1) {
+        A[k] = L[i];
+        i++;
+        k++;
+    }
+
+    while (j < n2) {
+        A[k] = R[j];
+        j++;
+        k++;
+    }
+
+    delete[] L;
+    delete[] R;
+}
+
+void mergeSort(int A[], int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+        mergeSort(A, left, mid);
+        mergeSort(A, mid + 1, right);
+        merge(A, left, mid, right);
+    }
+}
+
+// Function to perform Quick Sort
+int partition(int A[], int low, int high) {
+    int pivot = A[high];
+    int i = (low - 1);
+    for (int j = low; j < high; j++) {
+        if (A[j] < pivot) {
+            i++;
+            swap(A[i], A[j]);
+        }
+    }
+    swap(A[i + 1], A[high]);
+    return (i + 1);
+}
+
+void quickSort(int A[], int low, int high) {
+    if (low < high) {
+        int pi = partition(A, low, high);
+        quickSort(A, low, pi - 1);
+        quickSort(A, pi + 1, high);
+    }
+}
+
+// Function to generate random numbers
+void generateRandomNumbers(int A[], int n) {
+    for (int i = 0; i < n; i++) {
+        A[i] = rand() % 20001 - 10000; // Random number
+    }
+}
+
+// Function to print the array
+void printArray(int A[], int n) {
+    for (int i = 0; i < n; i++) {
+        cout << A[i] << " ";
+    }
+    cout << endl;
+}
+
+int main() {
+    srand(time(0));
+    char choice;
+    char repeat = 'y';
+
+    while (repeat == 'y' || repeat == 'Y') {
+        displayMenu();
+        cin >> choice;
+
+        if (choice == 'd' || choice == 'D') {
+            cout << "I hope you get your problem sorted.\nThanks for using me.\n";
+            break;
+        }
+
+        int n;
+        cout << "Enter the size of the array: ";
+        cin >> n;
+        int* A = new int[n];
+
+        // Fill the array with random numbers
+        generateRandomNumbers(A, n);
+        cout << "Array before sorting:\n";
+        printArray(A, n);
+
+        switch (choice) {
+        case 'a':
+        case 'A':
+            insertionSort(A, n);
+            cout << "Array after Insertion Sort:\n";
+            break;
+        case 'b':
+        case 'B':
+            mergeSort(A, 0, n - 1);
+            cout << "Array after Merge Sort:\n";
+            break;
+        case 'c':
+        case 'C':
+            quickSort(A, 0, n - 1);
+            cout << "Array after Quick Sort:\n";
+            break;
+        default:
+            cout << "Invalid choice! Please select again.\n";
+            continue;
+        }
+
+        printArray(A, n);
+
+        cout << "Do you want to perform sorting again? (y/n): ";
+        cin >> repeat;
+
+        if (repeat == 'n' || repeat == 'N') {
+            cout << "Now you are good at sorting.\n";
+        }
+
+        delete[] A;  // Free the dynamically allocated memory
+    }
+
+    return 0;
+}
